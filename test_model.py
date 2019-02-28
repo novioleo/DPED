@@ -6,10 +6,17 @@ import tensorflow as tf
 from models import resnet
 import utils
 import os
+
 import sys
 
 # process command arguments
-phone, dped_dir, test_subset, iteration, resolution, use_gpu = utils.process_test_model_args(sys.argv)
+# phone, dped_dir, test_subset, iteration, resolution, use_gpu = utils.process_test_model_args(sys.argv)
+phone = 'blackberry_orig'
+dped_dir = './dped/'
+test_subset = "all"
+iteration = "all"
+resolution = "orig"
+use_gpu = "false"
 
 # get all available image resolutions
 res_sizes = utils.get_resolutions()
@@ -29,8 +36,8 @@ enhanced = resnet(x_image)
 
 with tf.Session(config=config) as sess:
 
-    test_dir = dped_dir + phone.replace("_orig", "") + "/test_data/full_size_test_images/"
-    test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
+    test_dir = dped_dir #+ phone.replace("_orig", "") + "/test_data/full_size_test_images/"
+    test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(os.path.join(test_dir,f)) and f.endswith('jpg')]
 
     if test_subset == "small":
         # use five first images only
